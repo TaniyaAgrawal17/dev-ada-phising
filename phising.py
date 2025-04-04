@@ -43,6 +43,7 @@ with col2:
 
         is_phishing = (prediction[0] == 1)
 
+        st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
         st.markdown(f"""
             <div style="padding: 20px; border-radius: 10px; background-color: {'#ffdddd' if is_phishing else '#ddffdd'};">
                 <h3 style="color: {'#cc0000' if is_phishing else '#006600'};">
@@ -51,4 +52,15 @@ with col2:
             </div>
         """, unsafe_allow_html=True)
     else:
+        st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
         st.info("Enter an email on the left to see results.")
+
+st.markdown(
+    """
+    <hr style="border:1px solid #eee;" />
+    <div style="text-align: center; font-size: 0.9em; color: gray;">
+        Made for Dev Ada by Taniya Agrawal, Caroline Feng, Vittoria Gallina, Stephanie Kirova, and Kassie Xue | Built with Streamlit
+    </div>
+    """,
+    unsafe_allow_html=True
+)
