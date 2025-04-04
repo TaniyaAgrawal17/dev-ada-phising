@@ -1,4 +1,16 @@
 import streamlit as st
+import joblib
+import numpy as np
+
+
+#def load_model():
+#    with open('svm_model.pkl', 'rb') as file:
+#        model = pickle.load(file)
+#    return model
+#model = load_model()
+
+svm_model = joblib.load("svm_model.pkl")
+tfidf_vectorizer = joblib.load("tfidf_vectorizer.pkl")
 
 st.set_page_config(
     page_title="Phishing Email Detector",
@@ -21,22 +33,21 @@ with col1:
     st.subheader("✉️ Paste Email Content")
     email_text = st.text_area("Enter the email content here:", height=300)
 
+
 with col2:
     st.subheader("🔍 Classification Result")
-    if email_text:
-        # Example logic — replace with your actual model
-        import random
-        confidence = random.uniform(0.5, 1.0)
-        is_phishing = confidence > 0.7
+    if email_text.strip():
+        email_list = [email_text]
+        x_input = tfidf_vectorizer.transform(email_list)
+        prediction = svm_model.predict(x_input)
+
+        is_phishing = (prediction[0] == 1)
 
         st.markdown(f"""
             <div style="padding: 20px; border-radius: 10px; background-color: {'#ffdddd' if is_phishing else '#ddffdd'};">
                 <h3 style="color: {'#cc0000' if is_phishing else '#006600'};">
-                    {'🚨 Phishing Detected' if is_phishing else '✅ Looks Legit'}
+                    {'🚨 Looks like phishing' if is_phishing else '✅ Looks Legit'}
                 </h3>
-                <p style="font-size: 18px;">
-                    Confidence: {confidence:.2f}
-                </p>
             </div>
         """, unsafe_allow_html=True)
     else:
